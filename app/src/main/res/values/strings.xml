@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">com.android.trustingsocial.test</string>
+    <string name="error_phone_format">Invalid phone number</string>
+</resources>
