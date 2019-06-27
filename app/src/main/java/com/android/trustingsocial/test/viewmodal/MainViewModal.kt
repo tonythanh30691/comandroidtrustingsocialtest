@@ -16,11 +16,12 @@ import kotlinx.coroutines.launch
 class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
 
     private var repository = LoanRepository(app)
-    var bankInfomation : ObservableField<BankResponse>  = ObservableField()
+    var bankInformation : ObservableField<BankResponse>  = ObservableField()
         set(value)  {
             field = value
             field.notifyChange()
         }
+
 
     fun loadBankInfomation() {
         postScreenState(ScreenState.Loading)
@@ -36,7 +37,7 @@ class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
     }
 
     fun loadBankInfoSuccess(bankResponse: BankResponse) {
-        bankInfomation.set(bankResponse)
+        bankInformation.set(bankResponse)
         postScreenState(ScreenState.Render(MainState.LoadDone))
     }
 }

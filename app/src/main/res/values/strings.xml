@@ -4,11 +4,11 @@
     <!--Loan Input Screen-->
     <string name="loan_input_bank_header">THÔNG TIN NGÂN HÀNG</string>
     <string name="loan_input_loan_limit">Hạn mức</string>
-    <string name="loan_input_loan_limit_format">%s - %s VND</string>
+    <string name="loan_input_loan_limit_format">%d - %d VND</string>
     <string name="loan_input_loan_limit_time">Thời hạn</string>
-    <string name="loan_input_loan_limit_time_format">%s Tháng - %s Tháng</string>
+    <string name="loan_input_loan_limit_time_format">%d Tháng - %d Tháng</string>
     <string name="loan_input_loan_limit_rate">Lãi suất</string>
-    <string name="loan_input_loan_limit_rate_format">%f &#37;</string>
+    <string name="loan_input_loan_limit_rate_format">%.2f \%%</string>
 
     <string name="loan_input_header">THÔNG TIN VAY</string>
     <string name="loan_input_phone">SDT di động</string>
@@ -17,6 +17,7 @@
     <string name="loan_input_address">Địa chỉ</string>
     <string name="loan_input_income">Thu nhập hàng tháng</string>
     <string name="loan_input_submit">Gửi đăng ký vay</string>
+
 
     <!--LoanNumberEditText view-->
     <string name="loan_edit_text_default_phone_error">Invalid phone number</string>
