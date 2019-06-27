@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout  xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-                name="viewmodel"
-                type="com.android.trustingsocial.test.viewmodal.MainViewModal"/>
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container"
             xmlns:tools="http://schemas.android.com/tools"
@@ -27,6 +21,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:visibility="gone"/>
 
+
         <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guiCenter"
                 android:layout_width="wrap_content"
@@ -34,13 +29,27 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5"/>
 
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guiLeftCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guiRightCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.75"/>
+
         <TextView
                 android:id="@+id/tvHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toRightOf="@id/guiCenter"
                 android:text="@string/loan_input_bank_header"
                 style="@style/TextAppearance.AppCompat.Large"/>
 
@@ -51,7 +60,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tvHeader"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toRightOf="@id/guiCenter"
                 android:text="Vietcombank"
                 style="@style/TextAppearance.AppCompat.Medium"/>
 
@@ -61,7 +70,7 @@
                 android:layout_height="@dimen/loan_input_logo_size"
                 app:layout_constraintTop_toBottomOf="@id/tvBankName"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toRightOf="@id/guiCenter"
                 android:background="@mipmap/ic_launcher"
                 android:layout_marginTop="10dp"/>
 
@@ -70,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/imgBankLogo"
-                app:layout_constraintRight_toLeftOf="@id/guiCenter"
+                app:layout_constraintRight_toRightOf="@id/guiLeftCenter"
                 android:text="@string/loan_input_loan_limit"
                 android:layout_marginRight="@dimen/loan_input_banking_info_margin"
                 android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"
@@ -101,7 +110,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/txtLimit"
-                app:layout_constraintLeft_toRightOf="@id/guiCenter"
+                app:layout_constraintLeft_toRightOf="@id/guiLeftCenter"
+                android:text=""
                 android:layout_marginLeft="@dimen/loan_input_banking_info_margin"
                 style="@style/LoanInputBankInfoTextValue"/>
 
@@ -129,19 +139,19 @@
                 android:id="@+id/tvLoanHeder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/txtLimitRateValue"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/guiCenter"
                 app:layout_constraintRight_toRightOf="parent"
                 android:text="@string/loan_input_header"
                 style="@style/TextAppearance.AppCompat.Large"
-                android:layout_marginTop="@dimen/loan_input_banking_loan_group_margin_top"/>
+                android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"/>
 
         <TextView
                 android:id="@+id/txtPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tvLoanHeder"
-                app:layout_constraintRight_toLeftOf="@id/guiCenter"
+                app:layout_constraintRight_toLeftOf="@id/guiRightCenter"
                 android:text="@string/loan_input_phone"
                 android:layout_marginRight="@dimen/loan_input_banking_info_margin"
                 android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"
@@ -152,7 +162,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/guiCenter"
+                app:layout_constraintLeft_toRightOf="@id/guiRightCenter"
                 app:layout_constraintBaseline_toBaselineOf="@id/txtPhone"
                 android:layout_marginLeft="@dimen/loan_input_banking_info_margin"/>
 
@@ -206,20 +216,21 @@
                 android:id="@+id/spnAddress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/txtAddress"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/eTxtNationalId"
-                app:layout_constraintBottom_toBottomOf="@id/txtAddress"
+                android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"
                 style="@style/LoanInputBankInfoTitleText"/>
 
         <TextView
                 android:id="@+id/txtIncome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/spnAddress"
+                app:layout_constraintTop_toBottomOf="@id/txtAddress"
                 app:layout_constraintRight_toRightOf="@id/txtNationalId"
                 android:text="@string/loan_input_income"
-                style="@style/LoanInputBankInfoTitleText"
-                android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"/>
+                android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"
+                style="@style/LoanInputBankInfoTitleText"/>
 
         <Spinner android:layout_width="0dp"
                  android:layout_height="wrap_content"

@@ -8,4 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="LoanInputBankInfoTitleText" parent="TextAppearance.AppCompat.Medium">
+        <!-- Customize your theme here. -->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="LoanInputBankInfoTextValue" parent="TextAppearance.AppCompat.Medium">
+        <!-- Customize your theme here. -->
+        <item name="android:textStyle">italic</item>
+    </style>
+
 </resources>

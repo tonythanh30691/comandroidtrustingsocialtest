@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="loan_input_padding_content">10dp</dimen>
+    <dimen name="loan_input_banking_info_margin_top">10dp</dimen>
+    <dimen name="loan_input_banking_info_margin">10dp</dimen>
+    <dimen name="loan_input_banking_loan_group_margin_top">40dp</dimen>
+    <dimen name="loan_input_logo_size">70dp</dimen>
+</resources>
