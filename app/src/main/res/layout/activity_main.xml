@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5"/>
+                app:layout_constraintGuide_percent="0.4"/>
 
         <TextView
                 android:id="@+id/tvHeader"
@@ -100,7 +100,7 @@
                 android:id="@+id/txtLimitValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/txtLimit"
+                app:layout_constraintBaseline_toBaselineOf="@id/txtLimit"
                 app:layout_constraintLeft_toRightOf="@id/guiCenter"
                 android:layout_marginLeft="@dimen/loan_input_banking_info_margin"
                 android:text="@{@string/loan_input_loan_limit_format(viewmodel.bankInformation.minAmount, viewmodel.bankInformation.maxAmount)}"
@@ -110,7 +110,7 @@
                 android:id="@+id/txtLimitTimeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/txtLimitValue"
+                app:layout_constraintBaseline_toBaselineOf="@id/txtLimitTime"
                 app:layout_constraintLeft_toLeftOf="@id/txtLimitValue"
                 android:text="@{@string/loan_input_loan_limit_time_format(viewmodel.bankInformation.minTenor, viewmodel.bankInformation.maxTenor)}"
                 android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"
@@ -120,7 +120,7 @@
                 android:id="@+id/txtLimitRateValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/txtLimitTimeValue"
+                app:layout_constraintBaseline_toBaselineOf="@id/txtLimitRate"
                 app:layout_constraintLeft_toLeftOf="@id/txtLimitTimeValue"
                 android:text="@{@string/loan_input_loan_limit_rate_format(viewmodel.bankInformation.rate)}"
                 android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"
@@ -214,10 +214,11 @@
 
         <TextView
                 android:id="@+id/txtIncome"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/spnAddress"
                 app:layout_constraintRight_toRightOf="@id/txtNationalId"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:text="@string/loan_input_income"
                 style="@style/LoanInputBankInfoTitleText"
                 android:layout_marginTop="@dimen/loan_input_banking_info_margin_top"/>
@@ -226,6 +227,7 @@
                  android:layout_height="wrap_content"
                  app:layout_constraintRight_toRightOf="parent"
                  app:layout_constraintLeft_toLeftOf="@id/eTxtNationalId"
+                 app:layout_constraintTop_toTopOf="@id/txtIncome"
                  app:layout_constraintBottom_toBottomOf="@id/txtIncome">
 
         </Spinner>

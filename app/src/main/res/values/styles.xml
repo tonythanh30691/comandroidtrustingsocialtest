@@ -13,7 +13,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="LoanInputBankInfoTextValue" parent="TextAppearance.AppCompat.Medium">
+    <style name="LoanInputBankInfoTextValue" parent="TextAppearance.AppCompat.Small">
         <!-- Customize your theme here. -->
         <item name="android:textStyle">italic</item>
     </style>
