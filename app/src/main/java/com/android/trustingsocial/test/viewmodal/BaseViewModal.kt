@@ -12,8 +12,17 @@ open class BaseViewModal<T>(application: Application) : AndroidViewModel(applica
     val modalState : LiveData<ScreenState<T>>
         get() = _modalState
 
+    // Error string
+    private val _errorMsg = MutableLiveData<String>()
+    val errorMsg : LiveData<String>
+        get() = _errorMsg
+
 
     protected fun postScreenState(state : ScreenState<T>) {
         _modalState.postValue(state)
+    }
+
+    protected fun postErrorMsg(msg : String) {
+        _errorMsg.postValue(msg)
     }
 }

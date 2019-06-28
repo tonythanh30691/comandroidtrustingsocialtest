@@ -17,3 +17,7 @@ object CacheConstant {
     const val CACHE_FOLDER_NAME = "HttpCache"
 }
 
+object LoanConstant {
+    const val REFJECT_INCOME_ID = "1"
+}
+

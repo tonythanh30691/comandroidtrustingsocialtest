@@ -10,6 +10,7 @@ import com.android.trustingsocial.test.R
 import com.android.trustingsocial.test.databinding.ActivityMainBinding
 import com.android.trustingsocial.test.ui.screenstate.ScreenState
 import com.android.trustingsocial.test.util.getViewModal
+import com.android.trustingsocial.test.util.showToast
 import com.android.trustingsocial.test.viewmodal.MainViewModal
 import com.codding.test.startoverflowuser.screenstate.MainState
 import timber.log.Timber
@@ -21,16 +22,33 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initialSetup()
-        viewModal.loadBankInfomation()
+        viewModal.loadRequireInformation()
     }
 
     private fun initialSetup() {
         Timber.d("initialSetup")
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
         viewModal = getViewModal()
         binding.viewmodel = viewModal
         viewModal.modalState.observe(::getLifecycle, ::updateUI)
+        viewModal.errorMsg.observe(::getLifecycle, ::showErrorMessage)
+
+        binding.btnSubmit.setOnClickListener{validateAndSubmitLoan()}
     }
+
+
+    private fun validateAndSubmitLoan() {
+        if (!binding.eTxtPhone.isInputValid())      return
+        if (!binding.eTxtName.isInputValid())       return
+        if (!binding.eTxtNationalId.isInputValid()) return
+        viewModal.submitLoan()
+    }
+
+    private fun showErrorMessage(msg : String) {
+        showToast(msg)
+    }
+
 
     private fun updateUI(screenState : ScreenState<MainState>?) {
         Timber.d("updateUI with state: $screenState")
@@ -46,9 +64,22 @@ class MainActivity : AppCompatActivity() {
             MainState.LoadDone -> {
                 showLoading(false)
             }
+            MainState.SubmitLoanDone -> {
+                showLoading(false)
+                showToast(getString(R.string.loan_input_submit_success))
+                resetScreen()
+            }
         }
     }
 
+    private fun resetScreen() {
+        binding.eTxtName.setText("")
+        binding.eTxtNationalId.setText("")
+        binding.eTxtPhone.setText("")
+        binding.spnAddress.setSelection(0)
+        binding.spnIncome.setSelection(0)
+        binding.eTxtName.requestFocus()
+    }
 
     private fun showLoading(isShow : Boolean = true) {
         Timber.d("showLoading $isShow")
@@ -61,5 +92,6 @@ class MainActivity : AppCompatActivity() {
             window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
     }
+
 
 }

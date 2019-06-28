@@ -3,12 +3,15 @@ package com.android.trustingsocial.test.network
 import android.content.Context
 import com.android.trustingsocial.test.BuildConfig
 import com.android.trustingsocial.test.R
+import com.android.trustingsocial.test.modal.LoanInput
+import com.android.trustingsocial.test.modal.LoanResponse
 import com.android.trustingsocial.test.util.ApiConstant
-import okhttp3.Interceptor
-import okhttp3.MediaType
-import okhttp3.Response
-import okhttp3.ResponseBody
+import com.android.trustingsocial.test.util.JsonHelper
+import okhttp3.*
 import timber.log.Timber
+import okhttp3.RequestBody
+import java.io.IOException
+
 
 class MockingInterceptor(private var context : Context) : Interceptor {
 
@@ -17,8 +20,9 @@ class MockingInterceptor(private var context : Context) : Interceptor {
             val uri = chain.request().url().uri().toString()
             Timber.d("intercept for uri: $uri")
             val responseString = when {
-                uri.endsWith(ApiConstant.API_GET_BANK_INFO) -> getBankInformationJson()
-                uri.endsWith(ApiConstant.API_GET_PROVINCE) -> getProvicesJson()
+                uri.endsWith(ApiConstant.API_GET_BANK_INFO) -> JsonHelper.loadJsonFromRaw(context, R.raw.bankinfo)
+                uri.endsWith(ApiConstant.API_GET_PROVINCE) -> JsonHelper.loadJsonFromRaw(context, R.raw.provices)
+                uri.endsWith(ApiConstant.API_REGIS_LOAN) -> generateLoanRespondString(chain.request())
                 else -> ""
             }
 
@@ -35,12 +39,31 @@ class MockingInterceptor(private var context : Context) : Interceptor {
         }
     }
 
-    private fun getBankInformationJson() : String {
-        return context.resources.openRawResource(R.raw.bankinfo).bufferedReader().use { it.readText() }
+    private fun bodyToString(request: RequestBody?): String {
+            try {
+                val buffer = okio.Buffer()
+                if (request != null) {
+                    request.writeTo(buffer)
+                    return buffer.readUtf8()
+                }
+            } catch (e: IOException) {
+                Timber.e(e)
+            }
+        return ""
     }
 
-    private fun getProvicesJson() : String {
-        return context.resources.openRawResource(R.raw.provices).bufferedReader().use { it.readText() }
+    private fun generateLoanRespondString(request: Request) : String {
+        var bodyString = bodyToString(request.body())
+        var loanInput : LoanInput = JsonHelper.convertJsonToClass(bodyString)
+        var loanResponse  = LoanResponse(
+                                id = System.currentTimeMillis().toString(), // Fake ID
+                                name = loanInput.name,
+                                phone = loanInput.phone,
+                                nationalId = loanInput.nationalId,
+                                monthlyIncome = loanInput.monthlyIncome,
+                                province = loanInput.province
+                            )
+        return JsonHelper.convertClassToJson(loanResponse)
     }
 
 }

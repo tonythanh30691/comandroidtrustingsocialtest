@@ -15,7 +15,7 @@ class LoanInputValidatorImpl : LoanInputValidator {
 
         private const val NATIONAL_ID_MIN_LENGTH = 9
         private const val NATIONAL_ID_MAX_LENGTH = 12
-        private const val NATIONAL_ID_REGEX_PATTERN = "^d{$NATIONAL_ID_MIN_LENGTH, $NATIONAL_ID_MAX_LENGTH}$"
+        private const val NATIONAL_ID_REGEX_PATTERN = "^\\d{$NATIONAL_ID_MIN_LENGTH,$NATIONAL_ID_MAX_LENGTH}$"
     }
 
     override fun validateNationalId(id : String) : Boolean {

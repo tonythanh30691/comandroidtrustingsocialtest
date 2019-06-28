@@ -4,7 +4,7 @@
     <!--Loan Input Screen-->
     <string name="loan_input_bank_header">THÔNG TIN NGÂN HÀNG</string>
     <string name="loan_input_loan_limit">Hạn mức</string>
-    <string name="loan_input_loan_limit_format">%d - %d VND</string>
+    <string name="loan_input_loan_limit_format">%s - %s VND</string>
     <string name="loan_input_loan_limit_time">Thời hạn</string>
     <string name="loan_input_loan_limit_time_format">%d Tháng - %d Tháng</string>
     <string name="loan_input_loan_limit_rate">Lãi suất</string>
@@ -17,10 +17,12 @@
     <string name="loan_input_address">Địa chỉ</string>
     <string name="loan_input_income">Thu nhập hàng tháng</string>
     <string name="loan_input_submit">Gửi đăng ký vay</string>
-
+    <string name="loan_input_submit_success">Đăng ký vay thành công</string>
 
     <!--LoanNumberEditText view-->
-    <string name="loan_edit_text_default_phone_error">Invalid phone number</string>
-    <string name="loan_edit_text_default_id_error">Invalid national Id (Must from 9 - 12 digit number)</string>
-    <string name="loan_edit_text_default_income_error">Income must greater than 3_000_000</string>
+    <string name="loan_edit_text_default_generic_error">Thông tin không hợp lệ</string>
+    <string name="loan_edit_text_default_phone_error">Số điện thoại không hợp lệ</string>
+    <string name="loan_edit_text_default_name_error">Bạn phải nhập Họ Và Tên</string>
+    <string name="loan_edit_text_default_id_error">CMND không hợp lệ (Từ 9 đến 12 chữ số)</string>
+    <string name="loan_edit_text_default_income_error">Thu nhập phải lớn hơn 3 triệu</string>
 </resources>

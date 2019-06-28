@@ -11,6 +11,7 @@
     <style name="LoanInputBankInfoTitleText" parent="TextAppearance.AppCompat.Medium">
         <!-- Customize your theme here. -->
         <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">textEnd</item>
     </style>
 
     <style name="LoanInputBankInfoTextValue" parent="TextAppearance.AppCompat.Small">

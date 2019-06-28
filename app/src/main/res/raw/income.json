@@ -1,0 +1,16 @@
+{
+    "data_list": [
+        {
+            "id": 1,
+            "description": "Dưới 3 triệu đồng"
+        },
+        {
+            "id": 3000001,
+            "description": "Từ 3 đến 10 triệu đồng"
+        },
+        {
+            "id": 10000001,
+            "description": "Trên 10 triệu đồng"
+        }
+    ]
+}

@@ -2,8 +2,8 @@
 <resources>
     <declare-styleable name="LoanNumberEditText">
         <attr name="numberType">
-            <flag name="phone" value="0x00000000" />
-            <flag name="national_id" value="0x00000001" />
+            <flag name="phone" value="1" />
+            <flag name="national_id" value="2" />
         </attr>
         <attr name="errorText" format="string" />
     </declare-styleable>
