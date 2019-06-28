@@ -2,8 +2,10 @@ package com.android.trustingsocial.test.di.module
 
 import android.content.Context
 import com.android.trustingsocial.test.network.MockingInterceptor
+import com.android.trustingsocial.test.util.ApiConstant
 import com.android.trustingsocial.test.util.CacheConstant
 import com.codding.test.startoverflowuser.di.qualifier.ApplicationContext
+import com.codding.test.startoverflowuser.di.qualifier.LoggingIntercepter
 import com.codding.test.startoverflowuser.di.qualifier.MockIntercepter
 import dagger.Module
 import dagger.Provides
@@ -13,16 +15,21 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 @Module(includes = [AppModule::class])
 class OkHttpClientModule {
 
     @Provides
-    fun okHttpClient(cache: Cache, @MockIntercepter applicationIntercepter : Interceptor) : OkHttpClient {
+    fun okHttpClient(cache: Cache, @LoggingIntercepter httpLoggingInterceptor: Interceptor,
+                     @MockIntercepter applicationIntercepter : Interceptor) : OkHttpClient {
         return OkHttpClient()
             .newBuilder()
             .cache(cache)
+            .connectTimeout(ApiConstant.API_CONNECTION_TIMEOUT , TimeUnit.SECONDS)
+            .readTimeout(ApiConstant.API_CONNECTION_TIMEOUT , TimeUnit.SECONDS)
             .addInterceptor(applicationIntercepter)
+            .addInterceptor(httpLoggingInterceptor)
             .build()
     }
 
@@ -39,6 +46,7 @@ class OkHttpClientModule {
     }
 
     @Provides
+    @LoggingIntercepter
     fun httpLoggingInterceptor() : Interceptor {
         var logger = HttpLoggingInterceptor { message -> Timber.d(message)  }
         logger.level = HttpLoggingInterceptor.Level.BODY

@@ -63,11 +63,16 @@ class MainActivity : AppCompatActivity() {
         when (mainState) {
             MainState.LoadDone -> {
                 showLoading(false)
+                binding.eTxtPhone.requestFocus()
             }
             MainState.SubmitLoanDone -> {
                 showLoading(false)
                 showToast(getString(R.string.loan_input_submit_success))
                 resetScreen()
+            }
+            MainState.LoadError -> {
+                showLoading(false)
+                showToast(getString(R.string.connection_error))
             }
         }
     }

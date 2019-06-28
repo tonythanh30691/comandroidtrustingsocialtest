@@ -9,6 +9,7 @@ object ApiConstant {
     const val API_REGIS_LOAN = "loans"
 
     const val API_RESPONSE_SUCCESS_CODE = 200
+    const val API_CONNECTION_TIMEOUT = 5L
 }
 
 

@@ -15,6 +15,7 @@ import com.codding.test.startoverflowuser.network.CustomResult
 import com.codding.test.startoverflowuser.screenstate.MainState
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -50,28 +51,28 @@ class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
 
     fun loadRequireInformation() {
         postScreenState(ScreenState.Loading)
-        // Load bank
         launchIOCoroutines {
-            var result = repository.getBankInformation()
-            when (result) {
-                is CustomResult.Success -> loadBankInfoSuccess(result.data)
-                else                    -> postScreenState(ScreenState.Render(MainState.LoadError))
+            var bankResult       = repository.getBankInformation()
+            var loadProvincesJob = repository.getProvinves()
+            incomes = loadIncomes()
+
+            // Handler error API call
+            if (bankResult is CustomResult.Error || loadProvincesJob is CustomResult.Error) {
+                postScreenState(ScreenState.Render(MainState.LoadError))
+            } else {
+                var bankResponse = (bankResult as CustomResult.Success).data
+                var provinceResponse = (loadProvincesJob as CustomResult.Success).data
+                // Load data into binding variables
+                bankInformation.set(bankResponse)
+                provinces.set(provinceResponse)
+
+                var incomeList = incomes.map { it.description }
+                incomeBinding.set(incomeList)
+
+                postScreenState(ScreenState.Render(MainState.LoadDone))
             }
         }
-        // Load provinces
-        launchIOCoroutines {
-            var result = repository.getProvinves()
-            when (result) {
-                is CustomResult.Success -> loadProvincesSuccess(result.data)
-                else                    -> postScreenState(ScreenState.Render(MainState.LoadError))
-            }
-        }
-        // Load income from json
-        launchIOCoroutines {
-            incomes = JsonHelper.convertClassFromJsonRaw<IncomeResponse>(getApplication(), R.raw.income).incomes
-            var incomeList = incomes.map { it.description }
-            incomeBinding.set(incomeList)
-        }
+
     }
 
     fun submitLoan() {
@@ -84,11 +85,11 @@ class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
                 // Start request loan
                 launchIOCoroutines {
                     var loanInput = LoanInput(
-                                    name = name.get() ?: "",
-                                    phone = phoneNumber.get() ?: "",
-                                    nationalId = nationalId.get() ?: "",
+                                    name          = name.get() ?: "",
+                                    phone         = phoneNumber.get() ?: "",
+                                    nationalId    = nationalId.get() ?: "",
                                     monthlyIncome = incomes[it].id,
-                                    province = provinces.get()!!.provinces[provinceSelectedPosition.get()!!]
+                                    province      = provinces.get()!!.provinces[provinceSelectedPosition.get()!!]
                                     )
                     var result = repository.regisLoan(loanInput)
                     when (result) {
@@ -100,25 +101,20 @@ class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
         }
     }
 
-    private fun submitLoanSuccess(loanResponse: LoanResponse) {
-        Timber.d("submitLoanSuccess : $loanResponse")
-        postScreenState(ScreenState.Render(MainState.SubmitLoanDone))
-    }
-
     private fun launchIOCoroutines(call : suspend () -> Unit) {
         viewModelScope.launch (Dispatchers.IO) {
             call()
         }
     }
 
-    private fun loadBankInfoSuccess(bankResponse: BankResponse) {
-        bankInformation.set(bankResponse)
-        postScreenState(ScreenState.Render(MainState.LoadDone))
+    private fun loadIncomes() : List<Income> {
+        return JsonHelper.convertClassFromJsonRaw<IncomeResponse>(getApplication(), R.raw.income).incomes
     }
 
-    private fun loadProvincesSuccess(provinceResponse: ProviceResponse) {
-        provinces.set(provinceResponse)
-        postScreenState(ScreenState.Render(MainState.LoadDone))
+    private fun submitLoanSuccess(loanResponse: LoanResponse) {
+        Timber.d("submitLoanSuccess : $loanResponse")
+        postScreenState(ScreenState.Render(MainState.SubmitLoanDone))
     }
+
 
 }

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">My Application</string>
 
+    <!--Common string-->
+    <string name="connection_error">Xảy ra lỗi kết nối, vui lòng thử lại sau</string>
+
     <!--Loan Input Screen-->
     <string name="loan_input_bank_header">THÔNG TIN NGÂN HÀNG</string>
     <string name="loan_input_loan_limit">Hạn mức</string>
