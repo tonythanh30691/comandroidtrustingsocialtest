@@ -22,7 +22,7 @@ import timber.log.Timber
 
 class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
 
-    private var repository = LoanRepository(app)
+    private var repository             = LoanRepository(app)
     // This variable hold full income data from Json local
     private var incomes : List<Income> = emptyList()
     // Binding data
@@ -43,11 +43,11 @@ class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
         }
 
     // Loan input binding data
-    var phoneNumber :  ObservableField<String>  = ObservableField()
-    var name :  ObservableField<String>  = ObservableField()
-    var nationalId :  ObservableField<String>  = ObservableField()
-    var provinceSelectedPosition :  ObservableField<Int>  = ObservableField()
-    var incomeSelectedPosition :  ObservableField<Int>  = ObservableField()
+    var phoneNumber              :  ObservableField<String>  = ObservableField()
+    var name                     :  ObservableField<String>  = ObservableField()
+    var nationalId               :  ObservableField<String>  = ObservableField()
+    var provinceSelectedPosition :  ObservableField<Int>     = ObservableField()
+    var incomeSelectedPosition   :  ObservableField<Int>     = ObservableField()
 
     fun loadRequireInformation() {
         postScreenState(ScreenState.Loading)
@@ -62,6 +62,7 @@ class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
             } else {
                 var bankResponse = (bankResult as CustomResult.Success).data
                 var provinceResponse = (loadProvincesJob as CustomResult.Success).data
+
                 // Load data into binding variables
                 bankInformation.set(bankResponse)
                 provinces.set(provinceResponse)
