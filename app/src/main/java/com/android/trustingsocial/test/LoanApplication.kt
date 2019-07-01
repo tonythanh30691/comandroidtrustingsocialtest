@@ -23,7 +23,6 @@ class LoanApplication : Application(), HasActivityInjector {
 
         appComponent = DaggerAppComponent.builder().application(this).build()
         appComponent.inject(this)
-        Picasso.setSingletonInstance(appComponent.getPicasso())
     }
 
     fun getAppComponent() : AppComponent {

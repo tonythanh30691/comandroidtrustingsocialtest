@@ -2,6 +2,7 @@ package com.android.trustingsocial.androidTest
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -15,6 +16,8 @@ import org.junit.Rule
 
 import org.junit.Test
 import org.junit.runner.RunWith
+import com.android.trustingsocial.test.util.testinghelper.EspressoIdlingResource
+import org.junit.After
 
 
 @RunWith(AndroidJUnit4::class)
@@ -22,19 +25,29 @@ class LoanInputValidateBehavior {
 
     @get:Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, false, false)
-    val resources = ApplicationProvider.getApplicationContext<LoanApplication>().resources
+
+    private val resources = ApplicationProvider.getApplicationContext<LoanApplication>().resources
 
     @Before
     fun setup() {
         activityRule.launchActivity(null)
+        registerIdlingResource()
+    }
+
+    private fun registerIdlingResource() {
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource())
     }
 
     @Test fun notInputPhoneTest() {
-        Thread.sleep(2000)
-        // WHEN
         onView(withId(R.id.btnSubmit)).perform(click())
         onView(withId(R.id.eTxtPhone)).check(matches(hasErrorText(resources.getString(R.string.loan_edit_text_default_phone_error))))
-        // THEN
     }
+
+    @After
+    fun unregisterIdlingResource() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource())
+    }
+
+
 
 }

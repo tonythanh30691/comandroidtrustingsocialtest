@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.android.trustingsocial.test.R
@@ -12,23 +11,27 @@ import com.android.trustingsocial.test.databinding.ActivityMainBinding
 import com.android.trustingsocial.test.ui.screenstate.ScreenState
 import com.android.trustingsocial.test.util.getViewModal
 import com.android.trustingsocial.test.util.showToast
+import com.android.trustingsocial.test.util.testinghelper.EspressoIdlingResource
 import com.android.trustingsocial.test.viewmodal.MainViewModal
-import com.android.trustingsocial.test.viewmodal.ViewModalFactory
 import com.codding.test.startoverflowuser.screenstate.MainState
 import dagger.android.AndroidInjection
 import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private lateinit var binding : ActivityMainBinding
     private lateinit var viewModal: MainViewModal
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         initialSetup()
         viewModal.loadRequireInformation()
+        EspressoIdlingResource.increment()
     }
 
     private fun initialSetup() {
@@ -69,6 +72,9 @@ class MainActivity : AppCompatActivity() {
         showLoading(false)
         when (mainState) {
             MainState.LoadDone -> {
+                if (!EspressoIdlingResource.getIdlingResource().isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
             }
             MainState.SubmitLoanDone -> {
                 showToast(getString(R.string.loan_input_submit_success))
@@ -100,6 +106,5 @@ class MainActivity : AppCompatActivity() {
             window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
     }
-
 
 }
