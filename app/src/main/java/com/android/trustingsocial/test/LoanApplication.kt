@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import com.android.trustingsocial.test.di.component.AppComponent
 import com.android.trustingsocial.test.di.component.DaggerAppComponent
+import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -22,6 +23,7 @@ class LoanApplication : Application(), HasActivityInjector {
 
         appComponent = DaggerAppComponent.builder().application(this).build()
         appComponent.inject(this)
+        Picasso.setSingletonInstance(appComponent.getPicasso())
     }
 
     fun getAppComponent() : AppComponent {

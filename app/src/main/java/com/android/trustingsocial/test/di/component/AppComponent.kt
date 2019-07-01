@@ -4,18 +4,20 @@ import android.app.Application
 import com.android.trustingsocial.test.LoanApplication
 import com.android.trustingsocial.test.di.module.*
 import com.codding.test.startoverflowuser.network.LoanApiInterface
+import com.squareup.picasso.Picasso
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
-@Component (modules = [AppModule::class, ViewModalModule::class,
+@Component (modules = [AppModule::class, ViewModalModule::class, PicassoModule::class,
     AndroidInjectionModule::class, ActivityBuilder::class])
 @Singleton
 interface AppComponent {
 
     fun getLoanApiService() : LoanApiInterface
+    fun getPicasso() : Picasso
 
     @Component.Builder
     interface Builder {
