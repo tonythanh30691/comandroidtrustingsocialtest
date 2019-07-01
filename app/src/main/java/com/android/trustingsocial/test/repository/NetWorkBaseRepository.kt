@@ -9,14 +9,7 @@ import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
 
-open class NetWorkBaseRepository (application : Application) {
-
-    var apiService : LoanApiInterface
-
-    init {
-        var sofApp = application as LoanApplication
-        apiService = sofApp.getAppComponent().getLoanApiService()
-    }
+open class NetWorkBaseRepository {
 
     suspend fun <T: Any> safeApiCall(call: suspend () -> Response<T>) : CustomResult<T> {
         try {

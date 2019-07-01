@@ -2,10 +2,10 @@ package com.android.trustingsocial.test.viewmodal
 
 import android.app.Application
 import androidx.databinding.*
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.trustingsocial.test.BR
+import com.android.trustingsocial.test.LoanApplication
 import com.android.trustingsocial.test.R
+import com.android.trustingsocial.test.di.component.DaggerGsonComponent
 import com.android.trustingsocial.test.modal.*
 import com.android.trustingsocial.test.repository.LoanRepository
 import com.android.trustingsocial.test.ui.screenstate.ScreenState
@@ -13,16 +13,15 @@ import com.android.trustingsocial.test.util.JsonHelper
 import com.android.trustingsocial.test.util.LoanConstant
 import com.codding.test.startoverflowuser.network.CustomResult
 import com.codding.test.startoverflowuser.screenstate.MainState
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
+class MainViewModal @Inject constructor(app: Application, var jsonHelper: JsonHelper) : BaseViewModal<MainState>(app) {
 
-    private var repository             = LoanRepository(app)
+    private var repository : LoanRepository
+
     // This variable hold full income data from Json local
     private var incomes : List<Income> = emptyList()
     // Binding data
@@ -48,6 +47,12 @@ class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
     var nationalId               :  ObservableField<String>  = ObservableField()
     var provinceSelectedPosition :  ObservableField<Int>     = ObservableField()
     var incomeSelectedPosition   :  ObservableField<Int>     = ObservableField()
+
+    init {
+        DaggerGsonComponent.builder().build().inject(this)
+        var apiService = (app as LoanApplication).getAppComponent().getLoanApiService()
+        repository = LoanRepository(apiService)
+    }
 
     fun loadRequireInformation() {
         postScreenState(ScreenState.Loading)
@@ -109,7 +114,7 @@ class MainViewModal(app: Application) : BaseViewModal<MainState>(app) {
     }
 
     private fun loadIncomes() : List<Income> {
-        return JsonHelper.convertClassFromJsonRaw<IncomeResponse>(getApplication(), R.raw.income).incomes
+        return jsonHelper.convertClassFromJsonRaw<IncomeResponse>(getApplication(), R.raw.income).incomes
     }
 
     private fun submitLoanSuccess(loanResponse: LoanResponse) {

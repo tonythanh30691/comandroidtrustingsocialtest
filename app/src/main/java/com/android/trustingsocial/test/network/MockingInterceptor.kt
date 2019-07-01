@@ -3,6 +3,7 @@ package com.android.trustingsocial.test.network
 import android.content.Context
 import com.android.trustingsocial.test.BuildConfig
 import com.android.trustingsocial.test.R
+import com.android.trustingsocial.test.di.component.DaggerGsonComponent
 import com.android.trustingsocial.test.modal.LoanInput
 import com.android.trustingsocial.test.modal.LoanResponse
 import com.android.trustingsocial.test.util.ApiConstant
@@ -11,17 +12,24 @@ import okhttp3.*
 import timber.log.Timber
 import okhttp3.RequestBody
 import java.io.IOException
+import javax.inject.Inject
 
 
 class MockingInterceptor(private var context : Context) : Interceptor {
+
+    @Inject lateinit var jsonHelper: JsonHelper
+
+    init {
+        DaggerGsonComponent.builder().build().inject(this)
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         if (BuildConfig.DEBUG) {
             val uri = chain.request().url().uri().toString()
             Timber.d("intercept for uri: $uri")
             val responseString = when {
-                uri.endsWith(ApiConstant.API_GET_BANK_INFO) -> JsonHelper.loadJsonFromRaw(context, R.raw.bankinfo)
-                uri.endsWith(ApiConstant.API_GET_PROVINCE) -> JsonHelper.loadJsonFromRaw(context, R.raw.provices)
+                uri.endsWith(ApiConstant.API_GET_BANK_INFO) -> jsonHelper.loadJsonFromRaw(context, R.raw.bankinfo)
+                uri.endsWith(ApiConstant.API_GET_PROVINCE) -> jsonHelper.loadJsonFromRaw(context, R.raw.provices)
                 uri.endsWith(ApiConstant.API_REGIS_LOAN) -> generateLoanRespondString(chain.request())
                 else -> ""
             }
@@ -54,7 +62,7 @@ class MockingInterceptor(private var context : Context) : Interceptor {
 
     private fun generateLoanRespondString(request: Request) : String {
         var bodyString = bodyToString(request.body())
-        var loanInput : LoanInput = JsonHelper.convertJsonToClass(bodyString)
+        var loanInput : LoanInput = jsonHelper.convertJsonToClass(bodyString)
         var loanResponse  = LoanResponse(
                                 id = System.currentTimeMillis().toString(), // Fake ID
                                 name = loanInput.name,
@@ -63,7 +71,7 @@ class MockingInterceptor(private var context : Context) : Interceptor {
                                 monthlyIncome = loanInput.monthlyIncome,
                                 province = loanInput.province
                             )
-        return JsonHelper.convertClassToJson(loanResponse)
+        return jsonHelper.convertClassToJson(loanResponse)
     }
 
 }

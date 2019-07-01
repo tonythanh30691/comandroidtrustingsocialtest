@@ -1,17 +1,16 @@
 package com.android.trustingsocial.test.di.component
 
 import android.app.Application
-import com.android.trustingsocial.test.di.module.ActivityBuilder
-import com.android.trustingsocial.test.di.module.AppModule
-import com.android.trustingsocial.test.di.module.NetworkModule
-import com.android.trustingsocial.test.di.module.PicassoModule
+import com.android.trustingsocial.test.LoanApplication
+import com.android.trustingsocial.test.di.module.*
 import com.codding.test.startoverflowuser.network.LoanApiInterface
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
-@Component (modules = [NetworkModule::class, AppModule::class,
+@Component (modules = [AppModule::class, ViewModalModule::class,
     AndroidInjectionModule::class, ActivityBuilder::class])
 @Singleton
 interface AppComponent {
@@ -25,5 +24,5 @@ interface AppComponent {
         fun build() : AppComponent
     }
 
-    fun inject(app : Application)
+    fun inject(app : LoanApplication)
 }

@@ -1,9 +1,7 @@
 package com.android.trustingsocial.test.di.module
 
 import com.android.trustingsocial.test.util.ApiConstant
-import com.codding.test.startoverflowuser.network.LoanApiInterface
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -12,16 +10,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module(includes = [OkHttpClientModule::class])
+@Module(includes = [OkHttpClientModule::class, GsonModule::class])
 class NetworkModule {
 
     @Provides
     @Singleton
-    fun getLoanApiService (retrofit: Retrofit) : LoanApiInterface {
-        return retrofit.create(LoanApiInterface::class.java)
-    }
-
-    @Provides
     fun retrofix(okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory,
                  coroutineCallAdapterFactory: CoroutineCallAdapterFactory) : Retrofit {
         return Retrofit.Builder()
@@ -32,17 +25,15 @@ class NetworkModule {
             .build()
     }
 
-    @Provides
-    fun gson() : Gson {
-        return GsonBuilder().create()
-    }
 
     @Provides
+    @Singleton
     fun gsonConverterFactory(gson: Gson) : GsonConverterFactory {
         return GsonConverterFactory.create(gson)
     }
 
     @Provides
+    @Singleton
     fun coroutineCallAdapterFactory() : CoroutineCallAdapterFactory {
         return CoroutineCallAdapterFactory()
     }

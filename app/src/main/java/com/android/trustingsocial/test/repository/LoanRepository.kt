@@ -1,13 +1,13 @@
 package com.android.trustingsocial.test.repository
 
-import android.app.Application
 import com.android.trustingsocial.test.modal.BankResponse
 import com.android.trustingsocial.test.modal.LoanInput
 import com.android.trustingsocial.test.modal.LoanResponse
 import com.android.trustingsocial.test.modal.ProviceResponse
 import com.codding.test.startoverflowuser.network.CustomResult
+import com.codding.test.startoverflowuser.network.LoanApiInterface
 
-class LoanRepository (app: Application) : NetWorkBaseRepository(app) {
+class LoanRepository (private var apiService: LoanApiInterface) : NetWorkBaseRepository() {
 
     suspend fun getBankInformation(): CustomResult<BankResponse> {
         return safeApiCall(
