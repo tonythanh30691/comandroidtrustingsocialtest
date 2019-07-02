@@ -11,13 +11,12 @@ import dagger.android.AndroidInjectionModule
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
-@Component (modules = [AppModule::class, ViewModalModule::class, PicassoModule::class,
+@Component (modules = [AppModule::class, ViewModalModule::class,
     AndroidInjectionModule::class, ActivityBuilder::class])
 @Singleton
 interface AppComponent {
 
     fun getLoanApiService() : LoanApiInterface
-    fun getPicasso() : Picasso
 
     @Component.Builder
     interface Builder {

@@ -8,9 +8,6 @@ object BindingConverter {
     @BindingConversion
     @JvmStatic
     fun convertToCurrency(newValue : Int) : String {
-        newValue?.let {
-            return DecimalFormat("#,###").format(it.toInt())
-        }
-        return ""
+        return DecimalFormat("#,###").format(newValue.toInt())
     }
 }
