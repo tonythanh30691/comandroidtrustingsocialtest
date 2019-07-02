@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         binding.eTxtPhone.setText("")
         binding.spnAddress.setSelection(0)
         binding.spnIncome.setSelection(0)
-        binding.eTxtName.requestFocus()
+        binding.eTxtPhone.requestFocus()
     }
 
     private fun showLoading(isShow : Boolean = true) {

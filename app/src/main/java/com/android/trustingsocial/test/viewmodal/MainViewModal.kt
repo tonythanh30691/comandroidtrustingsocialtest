@@ -45,8 +45,8 @@ class MainViewModal @Inject constructor(app: Application, var jsonHelper: JsonHe
     var phoneNumber              :  ObservableField<String>  = ObservableField()
     var name                     :  ObservableField<String>  = ObservableField()
     var nationalId               :  ObservableField<String>  = ObservableField()
-    var provinceSelectedPosition :  ObservableField<Int>     = ObservableField()
-    var incomeSelectedPosition   :  ObservableField<Int>     = ObservableField()
+    var provinceSelectedPosition :  ObservableInt            = ObservableInt()
+    var incomeSelectedPosition   :  ObservableInt            = ObservableInt()
 
     init {
         DaggerGsonComponent.builder().build().inject(this)
@@ -83,25 +83,23 @@ class MainViewModal @Inject constructor(app: Application, var jsonHelper: JsonHe
 
     fun submitLoan() {
         postScreenState(ScreenState.Loading)
-        incomeSelectedPosition.get()?.let {
-            if (incomes[it].id == LoanConstant.REFJECT_INCOME_ID) {
-                postScreenState(ScreenState.Render(MainState.LoadDone))
-                postErrorMsg(getApplication<Application>().getString(R.string.loan_edit_text_default_income_error))
-            } else {
-                // Start request loan
-                launchIOCoroutines {
-                    var loanInput = LoanInput(
-                                    name          = name.get() ?: "",
-                                    phone         = phoneNumber.get() ?: "",
-                                    nationalId    = nationalId.get() ?: "",
-                                    monthlyIncome = incomes[it].id,
-                                    province      = provinces.get()!!.provinces[provinceSelectedPosition.get()!!]
-                                    )
-                    var result = repository.regisLoan(loanInput)
-                    when (result) {
-                        is CustomResult.Success -> submitLoanSuccess(result.data)
-                        else                    -> postScreenState(ScreenState.Render(MainState.LoadError))
-                    }
+        if (incomes[incomeSelectedPosition.get()].id == LoanConstant.REFJECT_INCOME_ID) {
+            postScreenState(ScreenState.Render(MainState.LoadDone))
+            postErrorMsg(getApplication<Application>().getString(R.string.loan_edit_text_default_income_error))
+        } else {
+            // Start request loan
+            launchIOCoroutines {
+                var loanInput = LoanInput(
+                    name          = name.get() ?: "",
+                    phone         = phoneNumber.get() ?: "",
+                    nationalId    = nationalId.get() ?: "",
+                    monthlyIncome = incomes[incomeSelectedPosition.get()].id,
+                    province      = provinces.get()!!.provinces[provinceSelectedPosition.get()]
+                )
+                var result = repository.regisLoan(loanInput)
+                when (result) {
+                    is CustomResult.Success -> submitLoanSuccess(result.data)
+                    else                    -> postScreenState(ScreenState.Render(MainState.LoadError))
                 }
             }
         }
